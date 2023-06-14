@@ -59,3 +59,5 @@ kotlin {
 因為生成代碼不會出現在common(也沒有這dir),所以想在commonMain加`kotlin.srcDir`的得承擔代碼衝突的問題,更有可能會發生平台特定代碼被錯誤invoke的fatal error(反正過不了compiler),所以這邊就分成兩份了
 
 至於android release/debug的問題,懶得找gradle doc了,這個大概不難解決
+
+調用的話最好用actual/expect,別在common調用,雖然compiler給過,但ide會一直紅色error,也令intelliscene失去作用,雖然copy&paste也很白痴就是了
