@@ -1,8 +1,12 @@
-> timestamp: 2023-04-26T12:03:00+08:00
-> tag: backtracking, Leetcode
-> category: Leetcode
-> author: Phil Lui
-> title: Leetcode#46 筆記
+>timestamp: 2023-04-26T12:03:00+08:00
+>
+>tag: backtracking, Leetcode
+>
+>category: Leetcode
+>
+>author: Phil Lui
+>
+>title: Leetcode#46 筆記
 
 
 46是一條非常典型的backtracking題目,個人思路為兩層iteration加上recursion,這做法不是最快但也足夠

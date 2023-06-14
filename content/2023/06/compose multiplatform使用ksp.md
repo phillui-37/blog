@@ -1,8 +1,12 @@
-> timestamp: 2023-04-26T12:03:00+08:00
-> tag: backtracking, Leetcode
-> category: Leetcode
-> author: Phil Lui
-> title: compose multiplatform使用ksp
+>timestamp: 2023-04-26T12:03:00+08:00
+>
+>tag: backtracking, Leetcode
+>
+>category: Leetcode
+>
+>author: Phil Lui
+>
+>title: compose multiplatform使用ksp
 
 在kotlin官網的ksp doc中有一頁[KSP with Kotlin Multiplatform](https://kotlinlang.org/docs/ksp-multiplatform.html) 寫了不能在build.gradle.kts中使用`ksp(...)`,要在module的build.gradle.kts的root scope寫dependencies,然後手動add進不同的**configuration**
 
