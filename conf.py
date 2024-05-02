@@ -101,8 +101,6 @@ DEFAULT_LANG = "en"
 # the path will be used as a prefix for the generated pages location
 TRANSLATIONS = {
     DEFAULT_LANG: "",
-    'ja': './ja',
-    'zh_tw': './zh_tw',
     # Example for another language:
     # "es": "./es",
 }
@@ -142,12 +140,24 @@ TRANSLATIONS_PATTERN = '{path}.{lang}.{ext}'
 #          with a ``/``, otherwise end them with ``/index.html`` — or
 #          else they won’t be highlighted when active.
 
+# NAVIGATION_LINKS = {
+#     DEFAULT_LANG: (
+#         ("/archive.html", "Archive"),
+#         ("/categories/", "Tags"),
+#         ("/rss.xml", "RSS feed"),
+#     ),
+# }
+
 NAVIGATION_LINKS = {
     DEFAULT_LANG: (
-        ("/archive.html", "Archive"),
-        ("/categories/", "Tags"),
-        ("/rss.xml", "RSS feed"),
-    ),
+        ('/index.html', 'Home', 'fa fa-home'),
+        ('/archive.html', 'Archives', 'fa fa-folder-open'),
+        ('/categories/index.html', 'Tags', 'fa fa-tags'),
+        ('/rss.xml', 'RSS', 'fa fa-rss'),
+        ('https://kgy-production.xyz/', 'About me', 'fa fa-user'),
+        ('https://twitter.com/phil_kgy', 'My Twitter', 'fab fa-twitter'),
+        ('https://github.com/phillui-37', 'My Github', 'fab fa-github'),
+    )
 }
 
 # Alternative navigation links. Works the same way NAVIGATION_LINKS does,
@@ -158,7 +168,7 @@ NAVIGATION_ALT_LINKS = {
 }
 
 # Name of the theme to use.
-THEME = "bootblog4"
+THEME = "gruberwine"
 
 # A theme color. In default themes, it might be displayed by some browsers as
 # the browser UI color (eg. Chrome on Android). Other themes might also use it
@@ -862,8 +872,8 @@ GALLERIES_DEFAULT_THUMBNAIL = None
 # Panoramas (aspect ratio over 3:1) get 4x larger thumbnails due to scaling issues.
 
 IMAGE_FOLDERS = {'images': 'images'}
-# IMAGE_THUMBNAIL_SIZE = 400
-# IMAGE_THUMBNAIL_FORMAT = '{name}.thumbnail{ext}'
+IMAGE_THUMBNAIL_SIZE = 400
+IMAGE_THUMBNAIL_FORMAT = '{name}.thumbnail.{ext}'
 
 # #############################################################################
 # HTML fragments and diverse things that are used by the templates
