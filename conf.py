@@ -872,7 +872,7 @@ GALLERIES_DEFAULT_THUMBNAIL = None
 # Panoramas (aspect ratio over 3:1) get 4x larger thumbnails due to scaling issues.
 
 IMAGE_FOLDERS = {'images': 'images'}
-IMAGE_THUMBNAIL_SIZE = 400
+IMAGE_THUMBNAIL_SIZE = 800
 IMAGE_THUMBNAIL_FORMAT = '{name}.thumbnail.{ext}'
 
 # #############################################################################
