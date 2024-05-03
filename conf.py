@@ -873,7 +873,7 @@ GALLERIES_DEFAULT_THUMBNAIL = None
 
 IMAGE_FOLDERS = {'images': 'images'}
 IMAGE_THUMBNAIL_SIZE = 800
-IMAGE_THUMBNAIL_FORMAT = '{name}.thumbnail.{ext}'
+IMAGE_THUMBNAIL_FORMAT = '{name}.thumbnail{ext}'
 
 # #############################################################################
 # HTML fragments and diverse things that are used by the templates
