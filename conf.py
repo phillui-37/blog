@@ -154,9 +154,10 @@ NAVIGATION_LINKS = {
         ('/archive.html', 'Archives', 'fa fa-folder-open'),
         ('/categories/index.html', 'Tags', 'fa fa-tags'),
         ('/rss.xml', 'RSS', 'fa fa-rss'),
-        ('https://kgy-production.xyz/', 'About me', 'fa fa-user'),
+        ('/pages/profile', 'About me', 'fa fa-user'),
         ('https://twitter.com/phil_kgy', 'My Twitter', 'fab fa-twitter'),
         ('https://github.com/phillui-37', 'My Github', 'fab fa-github'),
+        ('/pages/table-of-contents', 'Table Of Contents', 'fa fa-table-of-contents'),
     )
 }
 
