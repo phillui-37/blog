@@ -9,6 +9,8 @@
 .. type: text
 -->
 
+> 20250324: 抱歉之前的代碼是錯誤的，現已修正
+
 ## 工廠模式 - Factory Method Pattern
 
 用途: 將建立實體的邏輯放於其規格內部,以達到封裝及資源管理的目的.
@@ -18,19 +20,18 @@
 ```Java
 abstract class Logger {
     protected int logLevel;
+    
     Logger(int logLevel) {
         this.logLevel = logLevel;
     }
 
-    static Logger getInstance() {
-        return getInstance(3); //info
-    }
+    // This is the factory method that subclasses must implement
+    protected abstract Logger createLogger(int logLevel);
 
+    // The template method that uses the factory method
     static Logger getInstance(int logLevel) {
-        if (env == "DEBUG") {
-            return new DebugLogger(logLevel);
-        }
-        return new ReleaseLogger(logLevel);
+        LoggerFactory factory = new LoggerFactory();
+        return factory.createLogger(logLevel);
     }
 
     abstract int verbose(String msg);
@@ -43,38 +44,29 @@ abstract class Logger {
     abstract void setLogLevel(int logLevel);
 }
 
-class DebugLogger implements Logger {
-    DebugLogger(int logLevel) {
-        super(logLevel);
+// Factory class that decides which logger to create
+class LoggerFactory {
+    protected Logger createLogger(int logLevel) {
+        if (env == "DEBUG") {
+            return new DebugLogger(logLevel);
+        }
+        return new ReleaseLogger(logLevel);
     }
-
-    @Override
-    int verbose(String msg) {
-        System.err.println(msg);
-        return 0;
-    }
-    ...
 }
 
-class ReleaseLogger implements Logger {
-    ReleaseLogger(int logLevel) {
-        super(logLevel);
-    }
-
+// Or even better, separate factories for each type
+class DebugLoggerFactory extends LoggerFactory {
     @Override
-    int verbose(String msg) {
-        if (this.logLevel <= 0)
-            System.err.println(msg);
-        return 0;
+    protected Logger createLogger(int logLevel) {
+        return new DebugLogger(logLevel);
     }
+}
 
+class ReleaseLoggerFactory extends LoggerFactory {
     @Override
-    int debug(String msg) {
-        if (this.logLevel <= 1)
-            System.err.println(msg);
-        return 0;
+    protected Logger createLogger(int logLevel) {
+        return new ReleaseLogger(logLevel);
     }
-    ...
 }
 ```
 
@@ -89,56 +81,79 @@ const AVAILABLE_LOG_LEVEL = [
     'error'
 ];
 
-const releaseLogger = (() => {
-    let logLevel;
-
-    let logFnMeta = (level) => {
-        if (logLevel <= level)
-            return (msg) => console[level](msg);
-        else
-            return (_) => {};
+// Abstract factory (using closure)
+const createLoggerFactory = () => {
+    // This is the abstract factory method that concrete factories must implement
+    const createLogger = (logLevel) => {
+        throw new Error('Concrete factories must implement createLogger');
     };
 
-    const getLogFns = () => AVAILABLE_LOG_LEVEL.reduce((acc, level) => {
-        return {...acc, [level]: logFnMeta(level)};
-    }, {});
-
-    let loggerInstance = getLogFns();
-
-    const setLogLevel = (_logLevel) => {
-        logLevel = _logLevel;
-        loggerInstance = getLogFns();
+    return {
+        createLogger
     };
+};
 
-    return (_logLevel) => {
-        logLevel = _logLevel ?? DEFAULT_LOG_LEVEL;
-        return {
-            ...loggerInstance,
-            setLogLevel,
-            getLogLevel: () => logLevel,
-        };
-    };
-})();
-
-const debugLogger = (() => {
+// Concrete factory for debug logging
+const createDebugLoggerFactory = () => {
     const loggerInstance = AVAILABLE_LOG_LEVEL.reduce((acc, level) => {
         return {...acc, [level]: (msg) => console[level](msg)};
     }, {});
 
-    return (_logLevel) => {
-        let logLevel = _logLevel ?? DEFAULT_LOG_LEVEL;
+    const createLogger = (logLevel) => {
+        let currentLogLevel = logLevel ?? DEFAULT_LOG_LEVEL;
         return {
             ...loggerInstance,
-            setLogLevel: (_logLevel) => {logLevel = _logLevel},
-            getLogLevel: () => logLevel,
+            setLogLevel: (_logLevel) => {currentLogLevel = _logLevel},
+            getLogLevel: () => currentLogLevel,
         };
     };
-})();
 
+    return {
+        createLogger
+    };
+};
+
+// Concrete factory for release logging
+const createReleaseLoggerFactory = () => {
+    const createLogger = (logLevel) => {
+        let currentLogLevel = logLevel ?? DEFAULT_LOG_LEVEL;
+        
+        const logFnMeta = (level) => {
+            if (currentLogLevel <= level)
+                return (msg) => console[level](msg);
+            else
+                return (_) => {};
+        };
+
+        const loggerInstance = AVAILABLE_LOG_LEVEL.reduce((acc, level) => {
+            return {...acc, [level]: logFnMeta(level)};
+        }, {});
+
+        return {
+            ...loggerInstance,
+            setLogLevel: (_logLevel) => {
+                currentLogLevel = _logLevel;
+                // Recreate logger instance with new log level
+                Object.assign(loggerInstance, AVAILABLE_LOG_LEVEL.reduce((acc, level) => {
+                    return {...acc, [level]: logFnMeta(level)};
+                }, {}));
+            },
+            getLogLevel: () => currentLogLevel,
+        };
+    };
+
+    return {
+        createLogger
+    };
+};
+
+// Factory selector
 const logger = (logLevel) => {
-    if (env === 'DEBUG')
-        return debugLogger(logLevel);
-    return releaseLogger(logLevel);
+    const factory = env === 'DEBUG' 
+        ? createDebugLoggerFactory() 
+        : createReleaseLoggerFactory();
+    
+    return factory.createLogger(logLevel);
 };
 
 export default logger;
