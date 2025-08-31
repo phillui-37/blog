@@ -1039,7 +1039,7 @@ COMMENT_SYSTEM = "isso"
 # depends on what comment system you use. The default is
 # "nikolademo" which is a test account for Disqus. More information
 # is in the manual.
-COMMENT_SYSTEM_ID = "https://kgy-production.xyz/comments/"
+COMMENT_SYSTEM_ID = "http://kgy-production.xyz/comments/"
 
 # Create index.html for page folders?
 # WARNING: if a page would conflict with the index file (usually
